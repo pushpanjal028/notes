@@ -73,7 +73,7 @@ serve({
       return Response.json(note, { headers });
     }
 
-    return new Response("Backend Running 🚀", { headers });
+    return new Response(JSON.stringify({ message: "Route not found" }), { headers });
   },
 });
 
