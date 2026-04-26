@@ -9,7 +9,7 @@ export default function Home() {
   const [editId, setEditId] = useState(null);
 
   const navigate = useNavigate();
-  const API = "https://notes-o636.onrender.com/";
+  const API = "https://notes-o636.onrender.com";
 
  const fetchNotes = async () => {
   try {
