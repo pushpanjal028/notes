@@ -11,11 +11,16 @@ export default function Home() {
   const navigate = useNavigate();
   const API = "https://notes-o636.onrender.com/";
 
-  const fetchNotes = async () => {
+ const fetchNotes = async () => {
+  try {
     const res = await fetch(`${API}/notes`);
     const data = await res.json();
+    console.log("DATA:", data); // 👈 IMPORTANT (check console)
     setNotes(data);
-  };
+  } catch (err) {
+    console.error("Error fetching:", err);
+  }
+};
 
   useEffect(() => {
     fetchNotes();

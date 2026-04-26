@@ -77,4 +77,4 @@ serve({
   },
 });
 
-console.log(`🚀 Server running at http://localhost:${PORT}`);
+console.log(`🚀 Server running at https://notes-o636.onrender.com/`);
