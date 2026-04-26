@@ -6,7 +6,7 @@ export default function CreateNote() {
   const [content, setContent] = useState("");
   const navigate = useNavigate();
 
-  const API = "https://notes-o636.onrender.com/";
+  const API = "https://notes-o636.onrender.com";
 
   const handleSubmit = async () => {
     if (!title || !content) return alert("Fill all fields");
