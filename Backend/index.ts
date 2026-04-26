@@ -3,12 +3,12 @@ import { serve } from "bun";
 import mongoose from "mongoose";
 
 const MONGO_URI = process.env.MONGO_URI!;
-const PORT = Number(process.env.PORT || 3000);
+const PORT = Number(process.env.PORT || 3003);
 
 console.log("Starting server...");
 
 await mongoose.connect(MONGO_URI);
-console.log("✅ MongoDB Connected");
+console.log("MongoDB Connected");
 
 const NotesSchema = new mongoose.Schema({
   title: String,
