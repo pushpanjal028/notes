@@ -12,14 +12,14 @@ export default function Home() {
   const API = "https://notes-o636.onrender.com";
 
  const fetchNotes = async () => {
-  try {
-    const res = await fetch(`${API}/notes`);
-    const data = await res.json();
-    console.log("DATA:", data); // 👈 IMPORTANT (check console)
-    setNotes(data);
-  } catch (err) {
-    console.error("Error fetching:", err);
-  }
+  const res = await fetch(`${API}/notes`);
+  console.log("URL HIT:", res.url); 
+
+  const text = await res.text();
+console.log("RAW:", text);
+
+  const data = await res.json();
+  setNotes(data);
 };
 
   useEffect(() => {
