@@ -24,8 +24,15 @@ export default function Home() {
 };
 
   useEffect(() => {
-    fetchNotes();
-  }, []);
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    navigate("/auth");
+    return;
+  }
+
+  fetchNotes();
+}, [navigate]); // ✅ add this to avoid warning
 
   // UPDATE
   const handleUpdate = async () => {

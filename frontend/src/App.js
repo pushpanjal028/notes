@@ -3,6 +3,7 @@ import { Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import CreateNote from './pages/CreateNote';
+import Auth from './pages/Auth';
 import Footer from './components/Footer';
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/create" element={<CreateNote />} />
+          <Route path="/auth" element={<Auth />} />
         </Routes>
       </div>
 

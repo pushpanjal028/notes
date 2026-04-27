@@ -13,9 +13,9 @@ export default function CreateNote() {
 
     await fetch(`${API}/notes`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+       headers: {
+    Authorization: localStorage.getItem("token"),
+  },
       body: JSON.stringify({ title, content }),
     });
 
