@@ -24,6 +24,7 @@ const Note = mongoose.model("Note", NotesSchema);
 // 👇 Type for JWT payload
 type MyJwtPayload = {
   id: string;
+  email: string;
 };
 
 serve({
@@ -61,27 +62,29 @@ serve({
     }
 
     // 🔐 LOGIN
-    if (url.pathname === "/login" && req.method === "POST") {
-      const body = await req.json() as { email: string; password: string };
+   if (url.pathname === "/login" && req.method === "POST") {
+  const body = await req.json() as { email: string; password: string };
 
-      const user = await User.findOne({ email: body.email });
-      if (!user) {
-        return Response.json({ message: "User not found" }, { status: 401, headers });
-      }
+  const user = await User.findOne({ email: body.email });
 
-      const match = bcrypt.compare(body.password, user.password);
-      if (!match) {
-        return Response.json({ message: "Wrong password" }, { status: 401, headers });
-      }
+  if (!user?.password) {
+    return Response.json({ message: "User not found" }, { status: 401, headers });
+  }
 
-      const token = jwt.sign(
-        { id: user._id.toString() },
-        process.env.JWT_SECRET!,
-        { expiresIn: "1d" }
-      );
+  const match = await bcrypt.compare(body.password, user.password); // ✅ FIX
 
-      return Response.json({ token }, { headers });
-    }
+  if (!match) {
+    return Response.json({ message: "Wrong password" }, { status: 401, headers });
+  }
+
+  const token = jwt.sign(
+    { id: user._id.toString(), email: user.email },
+    process.env.JWT_SECRET!,
+    { expiresIn: "1d" }
+  );
+
+  return Response.json({ token }, { headers });
+}
 
     // 🟢 GET NOTES
     if (url.pathname === "/notes" && req.method === "GET") {
