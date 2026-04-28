@@ -39,7 +39,7 @@ export default function Auth() {
         localStorage.setItem("token", data.token);
         window.dispatchEvent(new Event("authChanged")); 
         window.location.reload(); 
-        navigate("/CreateNote");
+        navigate("/create");
       } else {
         alert("Registered successfully!");
         setIsLogin(true);
