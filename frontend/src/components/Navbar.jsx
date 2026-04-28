@@ -11,7 +11,7 @@ import { useState, useEffect } from "react";
 
 const navigation = [
   { name: "Home", href: "/", icon: HomeIcon },
-  { name: "Create Note", href: "/create", icon: PlusIcon },
+  { name: "Create Note", href: "/Create", icon: PlusIcon },
 ];
 
 export default function Navbar() {
@@ -38,7 +38,7 @@ export default function Navbar() {
   const logout = () => {
     localStorage.removeItem("token");
     setUser(null); // 🔥 instantly remove user
-    navigate("/");
+    navigate("/Home");
   };
 
   return (
