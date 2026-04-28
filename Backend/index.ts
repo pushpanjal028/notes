@@ -23,6 +23,7 @@ const Note = mongoose.model("Note", NotesSchema);
 
 // 👇 Type for JWT payload
 type MyJwtPayload = {
+  name: string;
   id: string;
   email: string;
 };
@@ -44,7 +45,10 @@ serve({
 
     // 🟢 REGISTER
     if (url.pathname === "/register" && req.method === "POST") {
-      const body = await req.json() as { email: string; password: string };
+      const body = await req.json() as { 
+        name: string; 
+        email: string; 
+        password: string };
 
       const existing = await User.findOne({ email: body.email });
       if (existing) {
@@ -54,6 +58,7 @@ serve({
       const hashed = await bcrypt.hash(body.password, 10);
 
       await User.create({
+        name: body.name,
         email: body.email,
         password: hashed,
       });
@@ -79,7 +84,7 @@ serve({
     }
 
     const token = jwt.sign(
-      { id: user._id.toString(), email: user.email },
+      { id: user._id.toString(), email: user.email, name: user.name },
       process.env.JWT_SECRET!,
       { expiresIn: "1d" }
     );

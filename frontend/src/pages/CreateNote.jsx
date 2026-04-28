@@ -8,19 +8,19 @@ export default function CreateNote() {
 
   const API = "https://notes-o636.onrender.com";
 
-  const handleSubmit = async () => {
-    if (!title || !content) return alert("Fill all fields");
+ const handleSubmit = async () => {
+  await fetch(`${API}/notes`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: localStorage.getItem("token"), // 🔥 IMPORTANT
+    },
+    body: JSON.stringify({ title, content }),
+  });
 
-    await fetch(`${API}/notes`, {
-      method: "POST",
-       headers: {
-    Authorization: localStorage.getItem("token"),
-  },
-      body: JSON.stringify({ title, content }),
-    });
+  navigate("/"); // 👈 go back to home
+};
 
-    navigate("/"); // go back to home
-  };
 
   return (
   <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-gray-800 to-black">

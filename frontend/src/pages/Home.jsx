@@ -13,7 +13,11 @@ export default function Home() {
 
  const fetchNotes = async () => {
   try {
-    const res = await fetch(`${API}/notes`);
+    const res = await fetch(`${API}/notes`, {
+      headers: {
+        Authorization: localStorage.getItem("token"),
+      },
+    });
     const data = await res.json();   // ✅ only JSON (no text())
     console.log("DATA:", data);
 

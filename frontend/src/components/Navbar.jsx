@@ -11,8 +11,8 @@ import { jwtDecode } from "jwt-decode";
 import { useState, useEffect } from "react";
 
 const navigation = [
-  { name: "Home", href: "/", icon: HomeIcon },
-  { name: "Create Note", href: "/create", icon: PlusIcon },
+  { name: "Home", href: "/Home", icon: HomeIcon },
+  { name: "Create Note", href: "/CreateNote", icon: PlusIcon },
 ];
 
 export default function Navbar() {
@@ -23,36 +23,34 @@ export default function Navbar() {
 
   // 🔥 keep navbar in sync with login/logout
   useEffect(() => {
-    const updateAuth = () => {
-      const t = localStorage.getItem("token");
-      setToken(t);
+  const updateAuth = () => {
+    const t = localStorage.getItem("token");
+    setToken(t);
 
-      if (t) {
-        try {
-          const decoded = jwtDecode(t);
-          setUser(decoded);
-        } catch {
-          setUser(null);
-        }
-      } else {
+    if (t) {
+      try {
+        const decoded = jwtDecode(t);
+        setUser(decoded);
+      } catch {
         setUser(null);
       }
-    };
+    } else {
+      setUser(null);
+    }
+  };
 
-    updateAuth();
+  updateAuth();
 
-    // 👇 listen for changes (important)
-    window.addEventListener("storage", updateAuth);
+  window.addEventListener("authChanged", updateAuth); // 🔥 change
 
-    return () => window.removeEventListener("storage", updateAuth);
-  }, []);
+  return () => window.removeEventListener("authChanged", updateAuth);
+}, []);
 
   const logout = () => {
-    localStorage.removeItem("token");
-    setToken(null);
-    setUser(null);
-    navigate("/"); // 👈 go home (empty page)
-  };
+  localStorage.removeItem("token");
+  window.dispatchEvent(new Event("storage")); // 🔥 update navbar
+  navigate("/Home");
+};
 
   return (
     <Disclosure
