@@ -1,6 +1,14 @@
 import { Disclosure, DisclosureButton, DisclosurePanel } from "@headlessui/react";
-import { Bars3Icon, XMarkIcon, HomeIcon, PlusIcon, ArrowRightOnRectangleIcon } from "@heroicons/react/24/outline";
+import {
+  Bars3Icon,
+  XMarkIcon,
+  HomeIcon,
+  PlusIcon,
+  ArrowRightOnRectangleIcon,
+} from "@heroicons/react/24/outline";
 import { Link, useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
+import { useState, useEffect } from "react";
 
 const navigation = [
   { name: "Home", href: "/", icon: HomeIcon },
@@ -8,11 +16,42 @@ const navigation = [
 ];
 
 export default function Navbar() {
-  const navigate = useNavigate(); // ✅ fix
+  const navigate = useNavigate();
+
+  const [token, setToken] = useState(null);
+  const [user, setUser] = useState(null);
+
+  // 🔥 keep navbar in sync with login/logout
+  useEffect(() => {
+    const updateAuth = () => {
+      const t = localStorage.getItem("token");
+      setToken(t);
+
+      if (t) {
+        try {
+          const decoded = jwtDecode(t);
+          setUser(decoded);
+        } catch {
+          setUser(null);
+        }
+      } else {
+        setUser(null);
+      }
+    };
+
+    updateAuth();
+
+    // 👇 listen for changes (important)
+    window.addEventListener("storage", updateAuth);
+
+    return () => window.removeEventListener("storage", updateAuth);
+  }, []);
 
   const logout = () => {
     localStorage.removeItem("token");
-    navigate("/auth");
+    setToken(null);
+    setUser(null);
+    navigate("/"); // 👈 go home (empty page)
   };
 
   return (
@@ -28,7 +67,11 @@ export default function Navbar() {
               {/* Mobile Button */}
               <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
                 <DisclosureButton className="p-2 text-gray-400 hover:text-white">
-                  {open ? <XMarkIcon className="h-6 w-6" /> : <Bars3Icon className="h-6 w-6" />}
+                  {open ? (
+                    <XMarkIcon className="h-6 w-6" />
+                  ) : (
+                    <Bars3Icon className="h-6 w-6" />
+                  )}
                 </DisclosureButton>
               </div>
 
@@ -55,14 +98,22 @@ export default function Navbar() {
                   );
                 })}
 
-                {/* 🔥 Logout Button */}
-                <button
-                  onClick={logout}
-                  className="flex items-center gap-2 bg-red-500/80 hover:bg-red-600 text-white px-3 py-2 rounded-md text-sm"
-                >
-                  <ArrowRightOnRectangleIcon className="h-5 w-5" />
-                  Logout
-                </button>
+                {/* 👤 User + Logout */}
+                {token && (
+                  <div className="flex items-center gap-4">
+                    <span className="text-sm text-gray-300">
+                      👋 {user?.email || user?.id?.slice(0, 6)}
+                    </span>
+
+                    <button
+                      onClick={logout}
+                      className="flex items-center gap-2 bg-red-500 hover:bg-red-600 px-3 py-1 rounded text-white"
+                    >
+                      <ArrowRightOnRectangleIcon className="h-5 w-5" />
+                      Logout
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -83,14 +134,16 @@ export default function Navbar() {
               );
             })}
 
-            {/* 🔥 Mobile Logout */}
-            <button
-              onClick={logout}
-              className="w-full flex items-center gap-2 bg-red-500 text-white px-3 py-2 rounded-md"
-            >
-              <ArrowRightOnRectangleIcon className="h-5 w-5" />
-              Logout
-            </button>
+            {/* Mobile Logout */}
+            {token && (
+              <button
+                onClick={logout}
+                className="w-full flex items-center gap-2 bg-red-500 text-white px-3 py-2 rounded-md"
+              >
+                <ArrowRightOnRectangleIcon className="h-5 w-5" />
+                Logout
+              </button>
+            )}
           </DisclosurePanel>
         </>
       )}

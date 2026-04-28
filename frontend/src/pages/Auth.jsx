@@ -39,7 +39,7 @@ export default function Auth() {
 
       if (isLogin) {
         localStorage.setItem("token", data.token);
-        navigate("/");
+        navigate("/createNote");
       } else {
         alert("Registered successfully! Now login.");
         setIsLogin(true);

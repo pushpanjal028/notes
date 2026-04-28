@@ -34,6 +34,8 @@ export default function Home() {
   fetchNotes();
 }, [navigate]); // ✅ add this to avoid warning
 
+
+
   // UPDATE
   const handleUpdate = async () => {
     if (!title || !content) return alert("Fill fields");

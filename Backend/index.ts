@@ -33,7 +33,7 @@ serve({
 
     const headers = {
       "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE",
+      "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
       "Access-Control-Allow-Headers": "Content-Type, Authorization",
     };
 
@@ -69,7 +69,7 @@ serve({
         return Response.json({ message: "User not found" }, { status: 401, headers });
       }
 
-      const match = await bcrypt.compare(body.password, user.password);
+      const match = bcrypt.compare(body.password, user.password);
       if (!match) {
         return Response.json({ message: "Wrong password" }, { status: 401, headers });
       }
