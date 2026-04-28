@@ -80,7 +80,7 @@ export default function Home() {
     {/* CREATE BUTTON */}
     <div className="text-center mb-8">
       <button
-        onClick={() => navigate("/Create")}
+        onClick={() => navigate("/create")}
         className="px-5 py-2 rounded-lg font-medium bg-gradient-to-r from-blue-500 to-purple-500 shadow-lg hover:scale-105 hover:shadow-blue-500/40 transition"
       >
         + Create Note

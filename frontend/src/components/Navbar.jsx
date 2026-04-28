@@ -11,7 +11,7 @@ import { useState, useEffect } from "react";
 
 const navigation = [
   { name: "Home", href: "/", icon: HomeIcon },
-  { name: "Create Note", href: "/Create", icon: PlusIcon },
+  { name: "Create Note", href: "/create", icon: PlusIcon },
 ];
 
 export default function Navbar() {
