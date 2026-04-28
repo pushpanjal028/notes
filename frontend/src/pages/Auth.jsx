@@ -37,8 +37,9 @@ export default function Auth() {
 
       if (isLogin) {
         localStorage.setItem("token", data.token);
-        window.dispatchEvent(new Event("authChanged")); // 🔥 navbar update
-        navigate("/create");
+        window.dispatchEvent(new Event("authChanged")); 
+        window.location.reload(); 
+        navigate("/CreateNote");
       } else {
         alert("Registered successfully!");
         setIsLogin(true);
